@@ -1,4 +1,3 @@
-
 // import { Alert } from "./Alert";
 
 // const App = () => {
@@ -22,32 +21,86 @@
 
 // import ClickCounter from './ClickCounter';
 // import Modal from "./Modal";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
+import { useState } from "react";
+import LoginForm from "./LoginForm";
+import SearchBar from "./SearchBar";
+import LangSwitcher from "./LangSwitcher";
 
 const App = () => {
-  const [clicks, setClicks] = useState(() => {
-    const savedClicks = window.localStorage.getItem("saved-clicks");
-    if (savedClicks !== null) {
-      return savedClicks;
-    }
-    return 0;
-  });
+  // Колбек-функція для обробки сабміту форми
+  const handleLogin = (userData) => {
+    // Виконуємо необхідні операції з даними
+    console.log(userData);
+  };
 
-  useEffect(() => {
-    window.localStorage.setItem("saved-clicks", clicks);
-  }, [clicks]);
+  const [lang, setLang] = useState("uk");
+  const [coffeeSize, setCoffeeSize] = useState("sm");
+  const handleSizeChange = (evt) => {
+    setCoffeeSize(evt.target.value);
+  };
 
+  const [hasAccepted, setHasAccepted] = useState(false);
+
+  const handleChange = (evt) => {
+    setHasAccepted(evt.target.checked);
+  };
   return (
     <div>
-      <button onClick={() => setClicks(clicks + 1)}>
-        You clicked {clicks} times
+      <h1>Please login to your account!</h1>
+      {/* Передаємо колбек як пропс форми */}
+      <LoginForm onLogin={handleLogin} />
+      <SearchBar />
+      <p>Selected language: {lang}</p>
+      <LangSwitcher value={lang} onSelect={setLang} />
+
+      <h1>Select coffee size</h1>
+      <label>
+        <input
+          type="radio"
+          name="coffeeSize"
+          value="sm"
+          checked={coffeeSize === "sm"}
+          onChange={handleSizeChange}
+        />
+        Small
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="coffeeSize"
+          value="md"
+          checked={coffeeSize === "md"}
+          onChange={handleSizeChange}
+        />
+        Meduim
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="coffeeSize"
+          value="lg"
+          checked={coffeeSize === "lg"}
+          onChange={handleSizeChange}
+        />
+        Large
+      </label>
+
+      <label>
+        <input
+          type="checkbox"
+          name="terms"
+          checked={hasAccepted}
+          onChange={handleChange}
+        />
+        I accept terms and conditions
+      </label>
+      <button type="button" disabled={hasAccepted}>
+        Proceed
       </button>
-      <button onClick={() => setClicks(0)}>Reset</button>
     </div>
   );
 };
-
-
 
 // const App = () => {
 //   // const [clicks, setClicks] = useState(0);
@@ -68,7 +121,6 @@ const App = () => {
 //     setClicks(clicks + 1);
 //   };
 
-
 //   return (
 //     <>
 //       <ClickCounter value={clicks} onUpdate={handleClick} />
@@ -85,7 +137,7 @@ const App = () => {
 //     x: 0,
 //     y: 0,
 // 	});
-	
+
 // 	const updateX = () => {
 // 			setValues({
 // 			...values,
@@ -111,6 +163,5 @@ const App = () => {
 //     </div>
 //   );
 // };
-
 
 export default App;
